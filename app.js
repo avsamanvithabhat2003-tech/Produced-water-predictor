@@ -210,16 +210,16 @@
 
   function resetForm() {
     const defaults = DATA[Math.floor(DATA.length / 2)] || {
-      initSal: 1.98,
-      mc: 1.45,
-      wr: 48,
-      hc: 1.01,
-      initCond: 11.57,
-      finCond: 7.8,
-      initTds: 6.74,
-      finTds: 9.005,
-      initPh: 8.79,
-      finPh: 7.055
+      initSal: 0,
+      mc: 0,
+      wr: 0,
+      hc: 0,
+      initCond: 0,
+      finCond: 0,
+      initTds: 0,
+      finTds: 0,
+      initPh: 0,
+      finPh: 0
     };
     FIELDS.forEach((field) => {
       document.getElementById(field.input).value = defaults[field.key];
