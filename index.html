@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Removal Efficiency Predictor</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">RE</div>
+        <div>
+          <h1>PW Model</h1>
+          <p>Removal efficiency predictor</p>
+        </div>
+      </div>
+
+      <section class="side-panel">
+        <h2>Model Mode</h2>
+        <label class="radio-row">
+          <input type="radio" name="mode" id="singleModeRadio" checked>
+          <span>Single prediction</span>
+        </label>
+        <label class="radio-row">
+          <input type="radio" name="mode" id="batchModeRadio">
+          <span>Batch upload</span>
+        </label>
+      </section>
+
+      <section class="status-card">
+        <span class="status-dot"></span>
+        <div>
+          <strong>Notebook parsed</strong>
+          <p id="datasetStatus">Reading experimental datapoints from Data points.xlsx...</p>
+        </div>
+      </section>
+
+      <section class="side-panel compact">
+        <h2>Best Notebook Model</h2>
+        <p>Predictions are estimated from the closest records in the supplied produced-water dataset.</p>
+      </section>
+    </aside>
+
+    <section class="workspace">
+      <header class="hero">
+        <p class="eyebrow">Research Interface</p>
+        <h2>Pollutant-Water Removal Efficiency Prediction Platform</h2>
+        <p>Estimate removal efficiency from salinity, material loading, water ratio, hydraulic condition, conductivity, TDS, and pH inputs.</p>
+      </header>
+
+      <section class="input-band">
+        <div class="tabs">
+          <button class="tab active" type="button" id="singleTab">Single Sample Prediction</button>
+          <button class="tab" type="button" id="batchTab">CSV Batch Upload</button>
+        </div>
+
+        <form id="predictForm" class="form-grid">
+          <div class="field-group">
+            <h3>Primary Parameters</h3>
+            <label>
+              <span>Initial Salinity</span>
+              <input id="initSal" type="number" step="0.001" value="12">
+            </label>
+            <label>
+              <span>MC</span>
+              <input id="mc" type="number" step="0.001" value="30">
+            </label>
+            <label>
+              <span>WR</span>
+              <input id="wr" type="number" step="0.001" value="1.5">
+            </label>
+            <label>
+              <span>HC</span>
+              <input id="hc" type="number" step="0.001" value="60">
+            </label>
+          </div>
+
+          <div class="field-group">
+            <h3>Water Quality</h3>
+            <label>
+              <span>Initial Conductivity</span>
+              <input id="initCond" type="number" step="0.001" value="950">
+            </label>
+            <label>
+              <span>Final Conductivity</span>
+              <input id="finCond" type="number" step="0.001" value="210">
+            </label>
+            <label>
+              <span>Initial TDS</span>
+              <input id="initTds" type="number" step="0.001" value="620">
+            </label>
+            <label>
+              <span>Final TDS</span>
+              <input id="finTds" type="number" step="0.001" value="135">
+            </label>
+          </div>
+
+          <div class="field-group compact-fields">
+            <h3>pH Conditions</h3>
+            <label>
+              <span>Initial pH</span>
+              <input id="initPh" type="number" min="0" max="14" step="0.01" value="7.2">
+            </label>
+            <label>
+              <span>Final pH</span>
+              <input id="finPh" type="number" min="0" max="14" step="0.01" value="7.0">
+            </label>
+          </div>
+
+          <div class="actions">
+            <button type="submit">Predict Removal Efficiency</button>
+            <button type="button" id="resetBtn" class="secondary">Reset</button>
+          </div>
+        </form>
+
+        <section id="batchPanel" class="batch-panel hidden">
+          <div class="batch-controls">
+            <div>
+              <h3>CSV Batch Prediction</h3>
+              <p>Upload a CSV with headers matching the notebook columns: Init_Sal, MC, WR, HC, Init_cond, Fin_cond, Init_TDS, Fin_TDS, Init_pH, Fin_pH.</p>
+            </div>
+            <label class="file-control">
+              <span>Choose CSV</span>
+              <input id="csvUpload" type="file" accept=".csv,text/csv">
+            </label>
+            <button type="button" id="downloadBatchBtn" class="secondary" disabled>Download Results</button>
+          </div>
+          <p id="batchStatus" class="batch-status">No CSV uploaded yet.</p>
+          <div class="table-wrap batch-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Row</th>
+                  <th>Predicted RE (%)</th>
+                  <th>Band</th>
+                  <th>Closest Distance</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="batchBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section class="result-grid">
+        <article class="prediction-panel">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow">Prediction</p>
+              <h3>Estimated Removal Efficiency</h3>
+            </div>
+            <span id="confidenceBadge">Waiting</span>
+          </div>
+          <div class="result-meter">
+            <div class="meter-arc">
+              <span id="predictionValue">--</span>
+              <small>RE (%)</small>
+            </div>
+            <div>
+            <p id="predictionSummary">Enter values and run prediction.</p>
+              <div class="range-bar">
+                <span id="rangeFill"></span>
+              </div>
+              <p id="rangeWarning" class="warning"></p>
+            </div>
+          </div>
+        </article>
+
+        <article class="inferred-panel">
+          <p class="eyebrow">Evidence</p>
+          <h3>Closest Records Summary</h3>
+          <div id="contributionCards" class="inferred-cards"></div>
+        </article>
+
+        <article class="method-panel">
+          <p class="eyebrow">Model Notes</p>
+          <h3>Notebook validation summary</h3>
+          <p>This interface mirrors the heat-pipe dashboard and uses standardized nearest-neighbor weighting over the supplied dataset. The notebook still reports Extra Trees as the best validation model.</p>
+          <dl id="modelStats"></dl>
+        </article>
+      </section>
+
+      <section class="matches-panel">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Audit Trail</p>
+            <h3>Nearest Dataset Matches</h3>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Init Sal</th>
+                <th>MC</th>
+                <th>WR</th>
+                <th>HC</th>
+                <th>Init Cond</th>
+                <th>Fin Cond</th>
+                <th>Init TDS</th>
+                <th>Fin TDS</th>
+                <th>Init pH</th>
+                <th>Fin pH</th>
+                <th>RE</th>
+              </tr>
+            </thead>
+            <tbody id="matchesBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="matches-panel">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Evidence</p>
+            <h3>Model Leaderboard From Notebook</h3>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Model</th>
+                <th>R2 Mean</th>
+                <th>RMSE Mean</th>
+                <th>MAE Mean</th>
+                <th>sMAPE Mean</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
