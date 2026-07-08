@@ -1,15 +1,22 @@
 :root {
-  color-scheme: dark;
-  --bg: #0d1016;
-  --panel: #171a23;
-  --panel-2: #222635;
-  --line: #33384a;
-  --text: #f5f7fb;
-  --muted: #aeb6c7;
-  --accent: #ff5757;
-  --accent-2: #48a6ff;
-  --good: #36d399;
-  --warn: #ffcf5a;
+  color-scheme: light;
+
+  --bg: #f5f7fa;
+  --panel: #ffffff;
+  --panel-2: #f8fafc;
+
+  --text: #1f2937;
+  --muted: #6b7280;
+
+  --line: #d9e2ec;
+  --border: #d9e2ec;
+
+  --accent: #2563eb;
+  --accent-2: #3b82f6;
+  --accent-soft: #dbeafe;
+
+  --good: #16a34a;
+  --warn: #dc2626;
 }
 
 * {
@@ -31,7 +38,7 @@ body {
 }
 
 .sidebar {
-  background: #272a35;
+  background: #ffffff;
   border-right: 1px solid var(--line);
   padding: 32px 28px;
 }
@@ -114,13 +121,13 @@ body {
   margin-top: 34px;
   padding: 18px;
   border-radius: 8px;
-  background: rgba(72, 166, 255, 0.15);
-  border: 1px solid rgba(72, 166, 255, 0.25);
+  background: #eef6ff;
+  border: 1px solid #cfe3ff;
 }
 
 .status-card p {
   margin: 5px 0 0;
-  color: #9fd0ff;
+  color: #2563eb;
   line-height: 1.45;
 }
 
@@ -216,7 +223,7 @@ label span {
 input[type="number"] {
   width: 100%;
   min-height: 44px;
-  border: 1px solid #2b3040;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   background: var(--panel-2);
   color: var(--text);
@@ -291,7 +298,7 @@ button:disabled {
 .file-control input {
   width: 100%;
   min-height: 44px;
-  border: 1px solid #2b3040;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   background: var(--panel-2);
   color: var(--text);
