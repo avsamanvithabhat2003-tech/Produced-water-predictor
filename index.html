@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Produced-Water Removal Efficiency Predictor</title>
+  <title>Removal Efficiency Predictor</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -46,7 +46,7 @@
     <section class="workspace">
       <header class="hero">
         <p class="eyebrow">Research Interface</p>
-        <h2>Produced-Water Removal Efficiency Predictor</h2>
+        <h2>Pollutant-Water Removal Efficiency Prediction Platform</h2>
         <p>Estimate removal efficiency from salinity, material loading, water ratio, hydraulic condition, conductivity, TDS, and pH inputs.</p>
       </header>
 
@@ -64,15 +64,15 @@
               <input id="initSal" type="number" step="0.001" value="0">
             </label>
             <label>
-              <span>Moles Consumed</span>
+              <span>MC</span>
               <input id="mc" type="number" step="0.001" value="0">
             </label>
             <label>
-              <span>Water Recovery</span>
+              <span>WR</span>
               <input id="wr" type="number" step="0.001" value="0">
             </label>
             <label>
-              <span>Hydrate Concentration</span>
+              <span>HC</span>
               <input id="hc" type="number" step="0.001" value="0">
             </label>
           </div>
@@ -178,10 +178,7 @@
         <article class="method-panel">
           <p class="eyebrow">Model Notes</p>
           <h3>Notebook validation summary</h3>
-          <p>The prediction interface utilizes the processed produced-water dataset to estimate removal efficiency.
-Model performance was evaluated using multiple machine learning algorithms, with the Extra Trees Regressor (ETR)
-demonstrating the highest predictive performance based on validation metrics.
-The model performance comparison is presented in the Model Leaderboard below.</p>
+          <p>This interface mirrors the heat-pipe dashboard and uses standardized nearest-neighbor weighting over the supplied dataset. The notebook still reports Extra Trees as the best validation model.</p>
           <dl id="modelStats"></dl>
         </article>
       </section>
@@ -220,7 +217,7 @@ The model performance comparison is presented in the Model Leaderboard below.</p
         <div class="section-title">
           <div>
             <p class="eyebrow">Evidence</p>
-            <h3>Machine Learning Model Performance Comparison</h3>
+            <h3>Model Leaderboard From Notebook</h3>
           </div>
         </div>
         <div class="table-wrap">
